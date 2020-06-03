@@ -1,3 +1,6 @@
+#### script limitasi pppoe ke queue tree ####
+
+
 :local ipaddr [/ip address get [/ip address find interface=$user] network]
 :log warning "$user login dengan ip $ipaddr"
 :if ($ipaddr in 10.8.8.192/26) do={
@@ -6,3 +9,6 @@
 :if ([:len $parent] = 0) do={/queue tree add name=DN-PPPOE parent=global }
 /queue tree add name=$user packet-mark=$user parent=DN-PPPOE limit-at=1000000 max-limit=8000000
 }
+
+
+####
