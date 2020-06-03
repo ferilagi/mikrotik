@@ -1,0 +1,8 @@
+:local ipaddr [/ip address get [/ip address find interface=$user] network]
+:log warning "$user login dengan ip $ipaddr"
+:if ($ipaddr in 10.8.8.192/26) do={
+/ip fire mangle add comment=$user chain=forward out-interface=$user action=mark-packet new-packet-mark=$user src-address=118.98.0.0/17 passthrough=no
+:local parent [/queue tree find name=DN-PPPOE]
+:if ([:len $parent] = 0) do={/queue tree add name=DN-PPPOE parent=global }
+/queue tree add name=$user packet-mark=$user parent=DN-PPPOE limit-at=1000000 max-limit=8000000
+}
